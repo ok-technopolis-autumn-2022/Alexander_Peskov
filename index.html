@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+</head>
+<body>
+    <header>
+        <h1>todos</h1>
+    </header>
+    <main>
+        <input type="text" placeholder="What needs to be done?">
+        <ul>
+            <li class="task">
+                <input type="checkbox" id="task1" name="task1">
+                <label for="task1">HTML</label>
+                <button class="delete-task"></button>
+            </li>
+            <li class="task">
+                <input type="checkbox" id="task2" name="task2">
+                <label for="task2">CSS</label>
+                <button class="delete-task"></button>
+            </li>
+            <li class="task">
+                <input type="checkbox" id="task3" name="task3">
+                <label for="task3">JS</label>
+                <button class="delete-task"></button>
+            </li>
+            <li class="task">
+                <input type="checkbox" id="task4" name="task4">
+                <label for="task4">JS tools</label>
+                <button class="delete-task"></button>
+            </li>
+        </ul>
+        <footer>
+            <div class="items-left-count">
+                <p>4 items left</p>
+            </div>
+            <section class="switches">
+                <input type="radio" name="switch">
+                <label class="all-switch">All</label>
+                <input type="radio" name="switch">
+                <label class="active-switch">Active</label>
+                <input type="radio" name="switch">
+                <label class="completed-switch">Completed</label>
+            </section>
+            <button class="clear-button">Clear completed</button>
+        </footer>
+    </main>
+</body>
+</html>
