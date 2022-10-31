@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Todo List</title>
+    <link href="style/style.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="todo-app">
         <header class="todo-app__header">
-            <h1>todos</h1>
+            todos
         </header>
 
         <main class="todo-app__frame">
             <section class="todo-app__main-controls">
-                <button class="select-all" title="Select all tasks" aria-label="Select all tasks"></button>
-                <input type="text" aria-label="Find task" placeholder="What needs to be done?">
+                <button class="todo-app__select-all" title="Select all tasks" aria-label="Select all tasks"></button>
+                <input class="todo-app__new-task-text" type="text" aria-label="Add task" placeholder="What needs to be done?">
             </section>
             
             <section class="todo-app__tasks">
@@ -22,7 +26,7 @@
                         <div class="task-item__view">
                             <label>                            
                                 <input type="checkbox" class="task-item__status" aria-label="Task: HTML">
-                                HTML
+                                <span class="task-item__text">HTML</span>
                             </label>
                             <button class="delete-task" title="Delete task: HTML" aria-label="Delete task: HTML"></button>
                         </div>
@@ -39,7 +43,7 @@
                         <div class="task-item__view">
                             <label>                            
                                 <input type="checkbox" class="task-item__status" aria-label="Task: CSS">
-                                CSS
+                                <span class="task-item__text">CSS</span>
                             </label>
                             <button class="delete-task" title="Delete task: CSS" aria-label="Delete task: CSS"></button>
                         </div>
@@ -56,7 +60,7 @@
                         <div class="task-item__view">
                             <label>                            
                                 <input type="checkbox" class="task-item__status" aria-label="Task: JS">
-                                JS
+                                <span class="task-item__text">JS</span>
                             </label>
                             <button class="delete-task" title="Delete task: JS" aria-label="Delete task: JS"></button>
                         </div>
@@ -73,7 +77,7 @@
                         <div class="task-item__view">
                             <label>                            
                                 <input type="checkbox" class="task-item__status" aria-label="Task: JS tools">
-                                JS tools
+                                <span class="task-item__text">JS tools</span>
                             </label>
                             <button class="delete-task" title="Delete task: JS tools" aria-label="Delete task: JS tools"></button>
                         </div>
@@ -96,15 +100,15 @@
                 <section class="switches" role="radiogroup" aria-label="Filter tasks">
                     <label class="all-switch">
                         <input type="radio" name="switch" aria-label="Select all tasks">
-                        All
+                        <span class="switch-text">All</span>
                     </label>
                     <label class="active-switch"></label>
                         <input type="radio" name="switch" aria-label="Select active tasks">
-                        Active
+                        <span class="switch-text">Active</span>
                     </label>
                     <label class="completed-switch">
                         <input type="radio" name="switch" aria-label="Select completed tasks">
-                        Completed
+                        <span class="switch-text">Completed</span>
                     </label>
                 </section>
                 <button class="clear-button" title="Clear completed tasks" aria-label="Clear completed tasks">
@@ -112,6 +116,8 @@
                 </button>
             </footer>
         </main>
+        <div class="todo-app__decoration-first"></div>
+        <div class="todo-app__decoration-second"></div>
     </div>
 </body>
 </html>
