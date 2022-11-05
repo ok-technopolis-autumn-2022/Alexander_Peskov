@@ -32,11 +32,11 @@ body {
 }
 
 .todo-app__new-task-text {
+    flex-grow: 1;
     font-family: 'Roboto', serif;
     font-style: italic;
     text-align: left;
     font-size: 24px;
-
     border: none;
     color: #666666;
 }
@@ -61,7 +61,7 @@ body {
     background-position: center;
     background-size: 25px;
     border: 0px #000 solid;
-    background-color: #fff;
+    background-color: #FFFFFF;
     width: 40px;
     height: 40px;
     align-self: center;
@@ -69,7 +69,7 @@ body {
 }
 
 .task-item__text {
-    vertical-align: 50%;
+    vertical-align: 65%;
     font-size: 24px;
     font-weight: 300;
     color: #666666;
@@ -105,9 +105,10 @@ input[type="checkbox"] {
 .todo-app__task-list {
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 
-.todo-app__task-item {
+.task-item__view {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -153,11 +154,11 @@ input[type="checkbox"] {
 }
 
 input[type="radio"]:checked + .switch-text {
-    border: 1px solid #EBDFDF;
+    outline: 1px solid #EBDFDF;
 }
 
-input[type="radio"]:focus + .switch-textt {
-    border: 1px solid #000000;
+input[type="radio"]:focus + .switch-text {
+    outline: 1px solid #808080;
 }
 
 input[type="radio"] {
@@ -167,9 +168,10 @@ input[type="radio"] {
 .clear-button {
     font-family: 'Roboto', serif;
     font-size: 14px;
-    color: #888888;;
-    border: 0px #000 solid;
-    background-color: #fff;
+    line-height: 25px;
+    color: #888888;
+    border: 0px #000000 solid;
+    background-color: #FFFFFF;
 }
 
 .todo-app__decoration-first {
