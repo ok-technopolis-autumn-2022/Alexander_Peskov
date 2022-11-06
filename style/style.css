@@ -16,6 +16,12 @@ body {
     align-items: center;
 }
 
+.task-item__status-text {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+}
+
 .todo-app__header {
     display: flex;
     justify-content: center;
@@ -73,10 +79,13 @@ body {
     font-size: 24px;
     font-weight: 300;
     color: #666666;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .task-item__status {
     margin: 9px;
+    flex-shrink: 0;
     align-self: center;
     width: 40px;
     height: 40px;
@@ -110,8 +119,9 @@ input[type="checkbox"] {
 
 .task-item__view {
     display: flex;
-    justify-content: space-between;
+    min-width: 0;
     align-items: center;
+    justify-content: space-between;
     white-space: nowrap;
     height: 64px;
     background: #FFFFFF;
