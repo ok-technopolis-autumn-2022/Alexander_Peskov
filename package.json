@@ -1,0 +1,34 @@
+{
+  "name": "alexander_peskov",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ok-technopolis-autumn-2022/Peskov_Alexander.git"
+  },
+  "author": "Peskov Alexander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ok-technopolis-autumn-2022/Peskov_Alexander/issues"
+  },
+  "homepage": "https://github.com/ok-technopolis-autumn-2022/Peskov_Alexander#readme",
+  "dependencies": {
+    "autoprefixer": "^10.4.13",
+    "parcel": "^2.8.0",
+    "postcss": "^8.4.19",
+    "postcss-import": "^15.0.0",
+    "postcss-nesting": "^10.2.0",
+    "postcss-preset-env": "^7.8.3",
+    "postcss-sassy-mixins": "^2.1.0",
+    "precss": "^4.0.0",
+    "stylelint": "^14.15.0"
+  },
+  "devDependencies": {
+    "stylelint-config-standard": "^29.0.0"
+  }
+}
