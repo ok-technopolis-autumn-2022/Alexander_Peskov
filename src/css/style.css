@@ -37,6 +37,11 @@ body {
     border-bottom: 1px solid #E6E6E6;
 }
 
+.main-controls__create-new {
+    display: flex;
+    flex-grow: 1;
+}
+
 .todo-app__new-task-text {
     flex-grow: 1;
     font-family: 'Roboto', serif;
@@ -66,7 +71,7 @@ body {
 }
 
 .todo-app__select-all {
-    background-image: url("../../icons/select-all.png");
+    background-image: url("../icons/select-all.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 25px;
@@ -99,7 +104,7 @@ body {
 }
 
 .task-item__status:checked {
-    background-image: url("../../icons/completed.png");
+    background-image: url("../icons/completed.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 24px;
@@ -145,7 +150,7 @@ input[type="checkbox"] {
 
 .task-item__view:hover > .delete-task,
 .delete-task:focus {
-    background-image: url("../../icons/close.png");
+    background-image: url("../icons/close.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 20px;
