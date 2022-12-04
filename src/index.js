@@ -6,7 +6,6 @@ const itemsCounterElement = document.querySelector('.items-left-count');
 const switches = document.querySelector('.switches');
 
 const TODOLIST_NAME = 'todolist';
-const ITEMS_COUNTER_NAME = 'itemsCounter';
 
 const FilterModes = {
     ALL: "All",
@@ -14,51 +13,48 @@ const FilterModes = {
     COMPLETED: "Completed"
 }
 
-var itemsCounter;
-var filterMode;
+let filterMode;
 
-window.onload = function() {
-    //localStorage.clear();
-    if (!localStorage.getItem(TODOLIST_NAME)) {
-        var todolist = [];
-        var itemsCount = 0;
-        localStorage.setItem(TODOLIST_NAME, JSON.stringify(todolist));
-        localStorage.setItem(ITEMS_COUNTER_NAME, JSON.stringify(itemsCount));
-    }   
+if (!localStorage.getItem(TODOLIST_NAME)) {
+    let todolist = [];
+    setTodolistInLocalStorage(todolist);
+}   
 
-    var todolist = JSON.parse(localStorage.getItem(TODOLIST_NAME));
-    var itemsCount = JSON.parse(localStorage.getItem(ITEMS_COUNTER_NAME));
-    updateItemsCount(itemsCount);
-
-    for (var i = 0; i < todolist.length; i++) {
-        console.log(todolist[i]);
-        ul.appendChild(createLi(todolist[i]));
-    }
-}
+let todolist = getTodolostFromLocalStorage();
+updateItemsCount(todolist);
+renderTodolist(todolist);
 
 function addTask(e) {
     e.preventDefault();
-
-    if (e.target.todoText.value == '') {
+    const text = e.target.todoText.value.trim();
+    if (text == '') {
         return;
     }
-    const task = createTask(e.target.todoText.value);
-    ul.appendChild(createLi(task));
+    const task = createTask(text);
 
-    var todolist = JSON.parse(localStorage.getItem(TODOLIST_NAME));
+    let todolist = getTodolostFromLocalStorage();
     todolist.push({
         id: task.id,
         desc: task.desc,
         checked: false
     })
-    localStorage.setItem(TODOLIST_NAME, JSON.stringify(todolist));
+    setTodolistInLocalStorage(todolist);
+    renderTask(task)
 
-    changeItemsCount(1);
     filter();
     this.reset();
 }
-
 form.addEventListener('submit', addTask);
+
+function renderTodolist(todolist) {
+    for (let i = 0; i < todolist.length; i++) {
+        renderTask(todolist[i]);
+    }
+}
+
+function renderTask(task) {
+    ul.appendChild(createLi(task));
+}
 
 function createLi(task) {
     const li = document.createElement('li');
@@ -86,20 +82,6 @@ function createLi(task) {
     const button = document.createElement('button');
     button.className = 'delete-task'
 
-    const changeStatus = () => {
-        updateTaskStatusInLocalStorage(task.id, input.checked);
-    };
-    input.addEventListener('change', changeStatus);
-
-    const deleteTask = () => {
-        button.removeEventListener('click', deleteTask);
-        input.removeEventListener('change', changeStatus);
-        changeItemsCount(-1);
-        deleteTaskFromLocalStorageById(task.id);
-        li.remove();
-    };
-    button.addEventListener('click', deleteTask);
-
     label.append(input, span);
     itemView.append(label, button);
     li.appendChild(itemView);
@@ -117,25 +99,15 @@ function createTask(desc) {
 function selectAll(e) {
     e.preventDefault();
 
-    var children = ul.children;
-    var allChecked = true;
-    for (var i = 0; i < children.length; i++) {
-        var child = children[i];
-        if (isActive(child)) {
-            allChecked = false;
-            break;
-        }
-    }
-    allChecked = !allChecked;
-    for (var i = 0; i < children.length; i++) {
-        var child = children[i];
-        updateTaskStatusInLocalStorage(child.id, allChecked);
+    let children = ul.children;
+    const allChecked = [...children].some(child => isActive(child));
+    for (let i = 0; i < children.length; i++) {
+        let child = children[i];
+        setTaskStatusInLocalStorage(child.id, allChecked);
         child.querySelector('.task-item__status').checked = allChecked;
     }
     filter();
-
 }
-
 selectAllButton.addEventListener('click', selectAll);
 
 function clearCompleted(e) {
@@ -143,48 +115,70 @@ function clearCompleted(e) {
     if (filterMode == FilterModes.ACTIVE) {
         return;
     }
-    var children = ul.children;
-    var length = children.length;
-    var deletedCounter = 0;
-    for (var i = 0; i < length; i++) {
-        var child = children[i];
+    let children = ul.children;
+    let length = children.length;
+    for (let i = 0; i < length; i++) {
+        let child = children[i];
         if (!isActive(child)) {
-            var id = child.id;
-            deleteTaskFromLocalStorageById(id);
+            deleteTaskFromLocalStorageById(child.id);
             child.remove();
-            deletedCounter++;
             i--;
             length--;
         }
     }
-    changeItemsCount(-deletedCounter);
 }
-
 clearCompletedButton.addEventListener('click', clearCompleted);
 
-function changeItemsCount(i) {
-    updateItemsCount(itemsCounter + i);
+function deleteTask(e) {
+    target = e.target;
+    if (target.className !== 'delete-task') {
+        return;
+    }
+    const li = target.parentNode.parentNode;
+    const id = li.id;
+    li.remove();
+    deleteTaskFromLocalStorageById(id);
 }
-
-function updateItemsCount(count) {
-    itemsCounter = count;
-    localStorage.setItem(ITEMS_COUNTER_NAME, JSON.stringify(itemsCounter));
-    itemsCounterElement.children[0].textContent = itemsCounter + ' items left';
-}
+ul.addEventListener('click', deleteTask);
 
 function deleteTaskFromLocalStorageById(id) {
-    var todolist = JSON.parse(localStorage.getItem(TODOLIST_NAME));
-    var index = todolist.findIndex(task => task.id == id);
+    let todolist = getTodolostFromLocalStorage();
+    let index = todolist.findIndex(task => task.id == id);
     todolist.splice(index, 1);
-    localStorage.setItem(TODOLIST_NAME, JSON.stringify(todolist));
+    setTodolistInLocalStorage(todolist);
 }
 
-function updateTaskStatusInLocalStorage(id, checked) {
-    var todolist = JSON.parse(localStorage.getItem(TODOLIST_NAME));
-    var index = todolist.findIndex(task => task.id == id);
+function changeTaskStatus(e) {
+    target = e.target;
+    if (target.className !== 'task-item__status') {
+        return;
+    }
+    const id = target.id;
+    const checked = target.checked;
+    setTaskStatusInLocalStorage(id, checked);
+}
+ul.addEventListener('click', changeTaskStatus);
+
+function setTaskStatusInLocalStorage(id, checked) {
+    let todolist = getTodolostFromLocalStorage();
+    let index = todolist.findIndex(task => task.id == id);
     todolist[index].checked = checked;
+    setTodolistInLocalStorage(todolist);
+    filter();
+}
+
+function getTodolostFromLocalStorage() {
+    return JSON.parse(localStorage.getItem(TODOLIST_NAME));
+}
+
+function setTodolistInLocalStorage(todolist) {
     localStorage.setItem(TODOLIST_NAME, JSON.stringify(todolist));
-    filter()
+    updateItemsCount(todolist);
+}
+
+function updateItemsCount(todolist) {
+    const count = todolist.filter(task => !task.checked).length;
+    itemsCounterElement.children[0].textContent = count + ' items left';
 }
 
 function isActive(task) {
@@ -192,9 +186,9 @@ function isActive(task) {
 }
 
 function updateFilterMode() {
-    var children = switches.children;
-    for (var i = 0; i < children.length; i++) {
-        var child = children[i].querySelector('input');
+    let children = switches.children;
+    for (let i = 0; i < children.length; i++) {
+        let child = children[i].querySelector('input');
         if (child.checked) {
             switch (child.id) {
                 case "all":
@@ -211,10 +205,11 @@ function updateFilterMode() {
     }
     filter();
 }
+switches.addEventListener('click', updateFilterMode);
 
 function filter() {
-    var showActive;
-    var showCompleted;
+    let showActive;
+    let showCompleted;
     switch (filterMode) {
         case FilterModes.ALL:
             showActive = true;
@@ -229,16 +224,18 @@ function filter() {
             showCompleted = true;
             break;
     }
-    var children = ul.children;
-    for (var i = 0; i < children.length; i++) {
-        var child = children[i];
+    let children = ul.children;
+    const hidden = "hidden";
+    const shown = "shown";
+    for (let i = 0; i < children.length; i++) {
+        let child = children[i];
         if (isActive(child) == showActive ||
             isActive(child) != showCompleted) {
-            child.style.display = "block";
+            child.classList.remove(hidden);
+            child.classList.add(shown);
         } else {
-            child.style.display = "none";
+            child.classList.remove(shown);
+            child.classList.add(hidden);
         }
     }
 }
-
-switches.addEventListener('click', updateFilterMode);
