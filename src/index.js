@@ -6,6 +6,8 @@ const itemsCounterElement = document.querySelector('.items-left-count');
 const switches = document.querySelector('.switches');
 
 const TODOLIST_NAME = 'todolist';
+const HIDDEN = "hidden";
+const SHOWN = "shown";
 
 const FilterModes = {
     ALL: "All",
@@ -27,7 +29,7 @@ renderTodolist(todolist);
 function addTask(e) {
     e.preventDefault();
     const text = e.target.todoText.value.trim();
-    if (text == '') {
+    if (text === '') {
         return;
     }
     const task = createTask(text);
@@ -112,18 +114,16 @@ selectAllButton.addEventListener('click', selectAll);
 
 function clearCompleted(e) {
     e.preventDefault();
-    if (filterMode == FilterModes.ACTIVE) {
+    if (filterMode === FilterModes.ACTIVE) {
         return;
     }
     let children = ul.children;
     let length = children.length;
-    for (let i = 0; i < length; i++) {
-        let child = children[i];
+    while (length--) {
+        let child = children[length];
         if (!isActive(child)) {
             deleteTaskFromLocalStorageById(child.id);
             child.remove();
-            i--;
-            length--;
         }
     }
 }
@@ -143,7 +143,7 @@ ul.addEventListener('click', deleteTask);
 
 function deleteTaskFromLocalStorageById(id) {
     let todolist = getTodolostFromLocalStorage();
-    let index = todolist.findIndex(task => task.id == id);
+    let index = todolist.findIndex(task => task.id === id);
     todolist.splice(index, 1);
     setTodolistInLocalStorage(todolist);
 }
@@ -161,7 +161,7 @@ ul.addEventListener('click', changeTaskStatus);
 
 function setTaskStatusInLocalStorage(id, checked) {
     let todolist = getTodolostFromLocalStorage();
-    let index = todolist.findIndex(task => task.id == id);
+    let index = todolist.findIndex(task => task.id === id);
     todolist[index].checked = checked;
     setTodolistInLocalStorage(todolist);
     filter();
@@ -225,17 +225,15 @@ function filter() {
             break;
     }
     let children = ul.children;
-    const hidden = "hidden";
-    const shown = "shown";
     for (let i = 0; i < children.length; i++) {
         let child = children[i];
-        if (isActive(child) == showActive ||
-            isActive(child) != showCompleted) {
-            child.classList.remove(hidden);
-            child.classList.add(shown);
+        if (isActive(child) === showActive ||
+            isActive(child) !== showCompleted) {
+            child.classList.remove(HIDDEN);
+            child.classList.add(SHOWN);
         } else {
-            child.classList.remove(shown);
-            child.classList.add(hidden);
+            child.classList.remove(SHOWN);
+            child.classList.add(HIDDEN);
         }
     }
 }
